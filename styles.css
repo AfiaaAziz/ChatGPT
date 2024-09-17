@@ -207,3 +207,39 @@ position: relative;
 
 }
 
+
+.chat-list 
+{
+ padding: 2rem 1rem 12rem;
+ max-height: 100vh;
+ overflow-y: auto;
+ 
+
+}
+
+.chat-list .message.incoming{
+    margin-top: 1.5rem;
+
+}
+
+
+.chat-list .message .message content{
+ display: flex;
+ gap: 1.5rem;
+ align-items: center;
+ width: 100%;
+
+}
+
+.chat-list .message .avatar{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    align-self: flex-start;
+
+}
+
+.chat-list .message .text{
+    color: var(--text-color);
+}
