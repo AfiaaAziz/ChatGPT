@@ -201,8 +201,9 @@ body {
 
 }
 
-.chat-list .message.loading .loading-indicator {
-    display: flex;
+.chat-list .message.loading .loading-indicator
+{
+display: flex;
 }
 
 .chat-list .loading-indicator .loading-bar {
