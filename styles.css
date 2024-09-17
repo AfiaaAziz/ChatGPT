@@ -32,7 +32,11 @@ color: var(--text-color);
 {
     margin-top: 7vh;
     padding: 1rem;
+}
 
+.header :where(.title, .subtitle){
+    font-weight: 500;
+    line-height: 3.6rem ;
 }
 
 .header .title
@@ -49,4 +53,52 @@ color: var(--text-color);
 
 .header .subtitle{
     font-size: 2.4rem;
+    color: var(--subheading-color);
+
 }
+
+.suggestion-list{
+    margin-top: 9.5vh;
+    list-style: none;
+    display: flex;
+    gap: 1.25rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+
+}
+
+.suggestion-list .suggestion{
+    padding: 1.25rem;
+    cursor: pointer;
+    border-radius: 0.75rem;
+    width: 227px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    background-color: var(--secondary-color);
+}
+
+.suggestion-list .suggestion:hover{
+
+    background: var(--secondary-hover-color);
+
+}
+
+.suggestion-list .suggestion .text{
+    font-weight: 400;
+
+}
+.suggestion-list .suggestion .icon{
+background: var(--primary-color);
+height: 42px;
+width: 42px;
+margin-top: 2.5rem;
+display: flex;
+justify-content: center;
+align-items: center;
+border-radius: 50%;
+
+}
+
