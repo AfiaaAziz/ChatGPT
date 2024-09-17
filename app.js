@@ -113,7 +113,10 @@ const handleOutgoingChat = () => {
 
 toggleThemeBtn.addEventListener("click" , () =>
 {
-    document.body.classList.toggle("light_mode");
+   const isLightmode =  document.body.classList.toggle("light_mode");
+
+    toggleThemeBtn.innerText = isLightmode  ? "dark_mode" : "light_mode";
+
 })
 
 typingForm.addEventListener("submit", (e) => {
