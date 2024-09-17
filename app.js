@@ -21,6 +21,8 @@ const handleOutgoingChat = () =>{
             </div>`;
 
           const outgoingMessageDiv =   createMessageElement(html, "outgoing");
+          outgoingMessageDiv.querySelector(".text").innerText =  userMessage;
+
           chatList.appendChild( outgoingMessageDiv);
 }
 
