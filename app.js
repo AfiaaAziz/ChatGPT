@@ -1,5 +1,7 @@
 const typingForm = document.querySelector(".typing-form");
 const chatList = document.querySelector(".chat-list");
+const toggleThemeBtn =  document.querySelector("#toggle-theme-btn");
+
 
 let userMessage = null;
 const API_key = "AIzaSyCHI1QOm-8FA1IFEIqCfM7RDoLTOEx6IUs";
@@ -107,6 +109,12 @@ const handleOutgoingChat = () => {
     typingForm.reset();
     setTimeout(showLoadingAnimation, 500);
 };
+
+
+toggleThemeBtn.addEventListener("click" , () =>
+{
+    document.body.classList.toggle("light_mode");
+})
 
 typingForm.addEventListener("submit", (e) => {
     e.preventDefault();
