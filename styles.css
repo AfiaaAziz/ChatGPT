@@ -30,7 +30,7 @@ color: var(--text-color);
 
 
 
-.header , .typing-form{
+.header , .chat-list .message , .typing-form{
 max-width: 1000px;
 margin: 0 auto;
 
@@ -110,6 +110,70 @@ align-items: center;
 border-radius: 50%;
 
 }
+
+
+
+.chat-list 
+{
+ padding: 2rem 1rem 12rem;
+ max-height: 100vh;
+ overflow-y: auto;
+
+
+}
+
+.chat-list .message.incoming{
+    margin-top: 1.5rem;
+
+}
+
+
+.chat-list .message .message-content{
+ display: flex;
+ gap: 1.5rem;
+ align-items: center;
+ width: 100%;
+
+}
+
+.chat-list .message .avatar{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    align-self: flex-start;
+
+}
+
+.chat-list .message .text{
+    color: var(--text-color);
+}
+
+.chat-list .message .icon{
+    height: 35px;
+    width: 35px;
+    display: flex;
+    cursor: pointer;
+    font-size: 1.25rem;
+    margin-left: 3.5rem;
+    align-items: center;
+    border-radius: 50%;
+    justify-content: center;
+    color: var(--text-color);
+    background: var(--secondary-color);
+    visibility: hidden;
+}
+
+
+.chat-list .message:hover .icon{
+visibility: visible;
+}
+
+.chat-list .message .icon:hover{
+    background: var(--secondary-color);
+
+}
+
 
 .typing-area
 {
@@ -205,41 +269,4 @@ position: relative;
     text-align: center;
     color: var(--placeholder-color);
 
-}
-
-
-.chat-list 
-{
- padding: 2rem 1rem 12rem;
- max-height: 100vh;
- overflow-y: auto;
- 
-
-}
-
-.chat-list .message.incoming{
-    margin-top: 1.5rem;
-
-}
-
-
-.chat-list .message .message content{
- display: flex;
- gap: 1.5rem;
- align-items: center;
- width: 100%;
-
-}
-
-.chat-list .message .avatar{
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    align-self: flex-start;
-
-}
-
-.chat-list .message .text{
-    color: var(--text-color);
 }
