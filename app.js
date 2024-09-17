@@ -1,8 +1,8 @@
 const typingForm = document.querySelector(".typing-form");
 const chatList = document.querySelector(".chat-list");
 const suggestions = document.querySelectorAll(".suggestion-list .suggestion");
-const toggleThemeBtn =  document.querySelector("#toggle-theme-btn");
-const deleteChatBtn =  document.querySelector("#delete-chat-btn");
+const toggleThemeBtn = document.querySelector("#toggle-theme-btn");
+const deleteChatBtn = document.querySelector("#delete-chat-btn");
 
 
 
@@ -13,18 +13,18 @@ const API_key = "AIzaSyCHI1QOm-8FA1IFEIqCfM7RDoLTOEx6IUs";
 const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${API_key}`;
 
 
-const loadLocalstorageData  = () => {
-    const  savedChats = localStorage.getItem("savedChats");
+const loadLocalstorageData = () => {
+    const savedChats = localStorage.getItem("savedChats");
 
-   const isLightmode = (localStorage.getItem("themeColor")  === "light_mode");
+    const isLightmode = (localStorage.getItem("themeColor") === "light_mode");
 
-    document.body.classList.toggle("light_mode", isLightmode );
-    toggleThemeBtn.innerText = isLightmode  ? "dark_mode" : "light_mode";
-    
-     chatList.innerHTML = savedChats || "";
-     document.body.classList.toggle("hide-header" , savedChats);
+    document.body.classList.toggle("light_mode", isLightmode);
+    toggleThemeBtn.innerText = isLightmode ? "dark_mode" : "light_mode";
 
-     chatList.scroll(0 ,  chatList.scrollHeight);
+    chatList.innerHTML = savedChats || "";
+    document.body.classList.toggle("hide-header", savedChats);
+
+    chatList.scroll(0, chatList.scrollHeight);
 
 }
 
@@ -50,18 +50,18 @@ const showTypingEffect = (text, textElement, incomingMessageDiv) => {
             textElement.innerText += ' ' + words[currentWordIndex++];
         }
 
-        
+
         chatList.scroll(0, chatList.scrollHeight);
 
         if (currentWordIndex === words.length) {
             clearInterval(typingInterval);
-            isResponseGenerating =  false;
+            isResponseGenerating = false;
 
             incomingMessageDiv.querySelector(".icon").classList.remove("hide");
 
-           
+
             localStorage.setItem("savedChats", chatList.innerHTML);
-          
+
             chatList.scroll(0, chatList.scrollHeight);
         }
     }, 75);
@@ -85,16 +85,17 @@ const generateAPIResponse = async (incomingMessageDiv) => {
         });
 
         const data = await response.json();
-        if(!response.ok) throw  new Error( data.error.message);
-        
+        if (!response.ok) throw new Error(data.error.message);
+
         const apiResponse = data?.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, '$1');
-        showTypingEffect(apiResponse,  textElement  , incomingMessageDiv);
+        showTypingEffect(apiResponse, textElement, incomingMessageDiv);
 
 
     } catch (error) {
-        isResponseGenerating =  false;
+        isResponseGenerating = false;
+        textElement.innerText = error.message;
+        textElement.chatList.add("error");
 
-        console.log("Error:", error);
 
     } finally {
         incomingMessageDiv.classList.remove("loading");
@@ -118,24 +119,24 @@ const showLoadingAnimation = () => {
     const incomingMessageDiv = createMessageElement(html, "incoming", "loading");
 
     chatList.appendChild(incomingMessageDiv);
-    chatList.scroll(0 ,  chatList.scrollHeight);
+    chatList.scroll(0, chatList.scrollHeight);
 
     generateAPIResponse(incomingMessageDiv);
 };
 
 
-const copyMessage  = (copyIcon) => {
-    const messageText  = copyIcon.parentElement.querySelector(".text").innerText;
+const copyMessage = (copyIcon) => {
+    const messageText = copyIcon.parentElement.querySelector(".text").innerText;
 
-navigator.clipboard.writeText(messageText );
-copyIcon.innerHTML = "done";
-setTimeout(() => copyIcon.innerText = "content_copy" , 1000);
+    navigator.clipboard.writeText(messageText);
+    copyIcon.innerHTML = "done";
+    setTimeout(() => copyIcon.innerText = "content_copy", 1000);
 }
 
 const handleOutgoingChat = () => {
     userMessage = typingForm.querySelector(".typing-input").value.trim() || userMessage;
     if (!userMessage || isResponseGenerating) return;
-    isResponseGenerating =  true;
+    isResponseGenerating = true;
 
 
 
@@ -150,40 +151,35 @@ const handleOutgoingChat = () => {
     chatList.appendChild(outgoingMessageDiv);
 
     typingForm.reset();
-    chatList.scroll(0 ,  chatList.scrollHeight);
- document.body.classList.add("hide-header");
+    chatList.scroll(0, chatList.scrollHeight);
+    document.body.classList.add("hide-header");
     setTimeout(showLoadingAnimation, 500);
 };
 
 
-suggestions.forEach(suggestion =>
-{
- suggestion.addEventListener("click", () =>
-{
- userMessage = suggestion.querySelector(".text").innerText;
- handleOutgoingChat();
-});
+suggestions.forEach(suggestion => {
+    suggestion.addEventListener("click", () => {
+        userMessage = suggestion.querySelector(".text").innerText;
+        handleOutgoingChat();
+    });
 });
 
 
-toggleThemeBtn.addEventListener("click" , () =>
-    {
-       const isLightmode =  document.body.classList.toggle("light_mode");
-       localStorage.setItem("themeColor", isLightmode  ? "light_mode" : "darkmode")
-        toggleThemeBtn.innerText = isLightmode  ? "dark_mode" : "light_mode";
-    
-    })
+toggleThemeBtn.addEventListener("click", () => {
+    const isLightmode = document.body.classList.toggle("light_mode");
+    localStorage.setItem("themeColor", isLightmode ? "light_mode" : "darkmode")
+    toggleThemeBtn.innerText = isLightmode ? "dark_mode" : "light_mode";
+
+})
 
 
-    deleteChatBtn.addEventListener("click", () =>
-    {
-if(confirm("Are you sure you  want to delete all messages?"))
-{
-    localStorage.removeItem("savedChats");
-    loadLocalstorageData();
-}
+deleteChatBtn.addEventListener("click", () => {
+    if (confirm("Are you sure you  want to delete all messages?")) {
+        localStorage.removeItem("savedChats");
+        loadLocalstorageData();
+    }
 
-    })
+})
 
 typingForm.addEventListener("submit", (e) => {
     e.preventDefault();
