@@ -7,6 +7,19 @@ let userMessage = null;
 const API_key = "AIzaSyCHI1QOm-8FA1IFEIqCfM7RDoLTOEx6IUs";
 const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${API_key}`;
 
+
+const loadLocalstorageData  = () => {
+    const  savedChats = localStorage.getItem("savedChats");
+
+   const isLightmode = (localStorage.getItem("themeColor")  === "light_mode");
+
+    document.body.classList.toggle("light_mode", isLightmode );
+    toggleThemeBtn.innerText = isLightmode  ? "dark_mode" : "light_mode";
+     chatList.innerHTML = savedChats || "";
+}
+
+loadLocalstorageData();
+
 const createMessageElement = (content, ...classes) => {
     const div = document.createElement("div");
     div.classList.add("message", ...classes);
@@ -29,6 +42,7 @@ const showTypingEffect = (text, textElement) => {
        
         if (currectwordIndex === words.length) {
             clearInterval(typingInterval);
+            localStorage.setItem("savedChats" , chatList.innerHTML)
         }
     }, 75);
 };
@@ -112,12 +126,12 @@ const handleOutgoingChat = () => {
 
 
 toggleThemeBtn.addEventListener("click" , () =>
-{
-   const isLightmode =  document.body.classList.toggle("light_mode");
-
-    toggleThemeBtn.innerText = isLightmode  ? "dark_mode" : "light_mode";
-
-})
+    {
+       const isLightmode =  document.body.classList.toggle("light_mode");
+       localStorage.setItem("themeColor", isLightmode  ? "light_mode" : "darkmode")
+        toggleThemeBtn.innerText = isLightmode  ? "dark_mode" : "light_mode";
+    
+    })
 
 typingForm.addEventListener("submit", (e) => {
     e.preventDefault();
