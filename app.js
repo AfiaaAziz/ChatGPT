@@ -13,7 +13,8 @@ const createMessageElement = (content, ...classes) => {
 };
 
 
-const generateAPIResponse = async () => {
+const generateAPIResponse = async (incomingMessageDiv) => {
+    const textElement = incomingMessageDiv.querySelector(".text");
     try {
         const response = await fetch(API_URL, {
             method: "POST",
@@ -29,13 +30,17 @@ const generateAPIResponse = async () => {
         });
 
       const data = await response.json();
-      
+      const apiResponse =  data?.candidates[0].content.parts[0].text;
+      textElement.innerHTML = apiResponse;
+
 
     } catch (error) {
         console.log("Error:", error);
-        // Handle the error, e.g., by returning an error message
+       
+    }finally{
+        incomingMessageDiv.classList.remove("loading");
     }
-};
+};`1`
 
 
 
@@ -55,7 +60,7 @@ const generateAPIResponse = async () => {
 
         chatList.appendChild(incomingMessageDiv);
 
-        generateAPIResponse();
+        generateAPIResponse(incomingMessageDiv);
     };
 
     const handleOutgoingChat = () => {
