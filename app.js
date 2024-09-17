@@ -16,6 +16,8 @@ const loadLocalstorageData  = () => {
     document.body.classList.toggle("light_mode", isLightmode );
     toggleThemeBtn.innerText = isLightmode  ? "dark_mode" : "light_mode";
      chatList.innerHTML = savedChats || "";
+     chatList.scroll(0 ,  chatList.scrollHeight);
+
 }
 
 loadLocalstorageData();
@@ -27,22 +29,30 @@ const createMessageElement = (content, ...classes) => {
     return div;
 };
 
-const showTypingEffect = (text, textElement) => {
+const showTypingEffect = (text, textElement, incomingMessageDiv) => {
     const words = text.split(" ");
-    let currectwordIndex = 0;
+    let currentWordIndex = 0;
+
+    incomingMessageDiv.querySelector(".icon").classList.add("hide");
 
     const typingInterval = setInterval(() => {
-       
-        if (currectwordIndex === 0) {
-            textElement.innerText += words[currectwordIndex++];
+        if (currentWordIndex === 0) {
+            textElement.innerText += words[currentWordIndex++];
         } else {
-            textElement.innerText += ' ' + words[currectwordIndex++];
+            textElement.innerText += ' ' + words[currentWordIndex++];
         }
 
-       
-        if (currectwordIndex === words.length) {
+        
+        chatList.scroll(0, chatList.scrollHeight);
+
+        if (currentWordIndex === words.length) {
             clearInterval(typingInterval);
-            localStorage.setItem("savedChats" , chatList.innerHTML)
+            incomingMessageDiv.querySelector(".icon").classList.remove("hide");
+
+           
+            localStorage.setItem("savedChats", chatList.innerHTML);
+          
+            chatList.scroll(0, chatList.scrollHeight);
         }
     }, 75);
 };
@@ -65,8 +75,8 @@ const generateAPIResponse = async (incomingMessageDiv) => {
         });
 
         const data = await response.json();
-        const apiResponse = data?.candidates[0].content.parts[0].text;
-      showTypingEffect(apiResponse,  textElement );
+        const apiResponse = data?.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, '$1');
+        showTypingEffect(apiResponse,  textElement  , incomingMessageDiv);
 
 
     } catch (error) {
@@ -94,6 +104,7 @@ const showLoadingAnimation = () => {
     const incomingMessageDiv = createMessageElement(html, "incoming", "loading");
 
     chatList.appendChild(incomingMessageDiv);
+    chatList.scroll(0 ,  chatList.scrollHeight);
 
     generateAPIResponse(incomingMessageDiv);
 };
@@ -120,7 +131,10 @@ const handleOutgoingChat = () => {
     outgoingMessageDiv.querySelector(".text").innerText = userMessage;
 
     chatList.appendChild(outgoingMessageDiv);
+
     typingForm.reset();
+    chatList.scroll(0 ,  chatList.scrollHeight);
+
     setTimeout(showLoadingAnimation, 500);
 };
 

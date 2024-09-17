@@ -131,6 +131,7 @@ body {
     padding: 2rem 1rem 12rem;
     max-height: 100vh;
     overflow-y: auto;
+    scrollbar-color: #999 transparent;
 
 
 }
@@ -196,7 +197,7 @@ body {
 }
 
 
-.chat-list .message:not(.loading):hover .icon {
+.chat-list .message:not(.loading):hover .icon:not(.hide) {
     visibility: visible;
 }
 
