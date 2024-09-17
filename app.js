@@ -4,11 +4,31 @@ const chatList =  document.querySelector('.chat-list');
 
 
 let userMessage = null;
-const createMessageElement = (content , className) => {
+const createMessageElement = (content , ...classes) => {
     const div = document.createElement('div');
-    div.classList.add("message" , className);
+    div.classList.add("message" , ...classes);
     div.innerHTML =  content;
     return div;
+}
+
+const showLoadingAnimation  = () => {
+
+    const html = ` <div class="message-content">
+                <img src="images/Gemini icon.png" alt="Gemini Image" class="avatar">
+                <p class="text"></p>
+                <div class="loading-indicator">
+                    <div class="loading-bar"></div>
+                    <div class="loading-bar"></div>
+                    <div class="loading-bar"></div>
+                </div>
+            </div>
+            <span class="icon material-symbols-rounded">content_copy</span>`;
+
+const incomingMessageDiv =   createMessageElement(html, "incoming", "loading");
+     
+chatList.appendChild( incomingMessageDiv );
+
+
 }
 
 const handleOutgoingChat = () =>{
@@ -24,6 +44,9 @@ const handleOutgoingChat = () =>{
           outgoingMessageDiv.querySelector(".text").innerText =  userMessage;
 
           chatList.appendChild( outgoingMessageDiv);
+ typingForm.reset();
+ setTimeout(showLoadingAnimation, 500);
+
 }
 
 
