@@ -12,6 +12,25 @@ const createMessageElement = (content, ...classes) => {
     return div;
 };
 
+const showTypingEffect = (text, textElement) => {
+    const words = text.split(" ");
+    let currectwordIndex = 0;
+
+    const typingInterval = setInterval(() => {
+       
+        if (currectwordIndex === 0) {
+            textElement.innerText += words[currectwordIndex++];
+        } else {
+            textElement.innerText += ' ' + words[currectwordIndex++];
+        }
+
+       
+        if (currectwordIndex === words.length) {
+            clearInterval(typingInterval);
+        }
+    }, 75);
+};
+
 
 const generateAPIResponse = async (incomingMessageDiv) => {
     const textElement = incomingMessageDiv.querySelector(".text");
@@ -29,23 +48,23 @@ const generateAPIResponse = async (incomingMessageDiv) => {
             })
         });
 
-      const data = await response.json();
-      const apiResponse =  data?.candidates[0].content.parts[0].text;
-      textElement.innerHTML = apiResponse;
+        const data = await response.json();
+        const apiResponse = data?.candidates[0].content.parts[0].text;
+      showTypingEffect(apiResponse,  textElement );
 
 
     } catch (error) {
         console.log("Error:", error);
-       
-    }finally{
+
+    } finally {
         incomingMessageDiv.classList.remove("loading");
     }
-};`1`
+}; `1`
 
 
 
-    const showLoadingAnimation = () => {
-        const html = ` <div class="message-content">
+const showLoadingAnimation = () => {
+    const html = ` <div class="message-content">
                 <img src="images/Gemini icon.png" alt="Gemini Image" class="avatar">
                 <p class="text"></p>
                 <div class="loading-indicator">
@@ -56,32 +75,32 @@ const generateAPIResponse = async (incomingMessageDiv) => {
             </div>
             <span class="icon material-symbols-rounded">content_copy</span>`;
 
-        const incomingMessageDiv = createMessageElement(html, "incoming", "loading");
+    const incomingMessageDiv = createMessageElement(html, "incoming", "loading");
 
-        chatList.appendChild(incomingMessageDiv);
+    chatList.appendChild(incomingMessageDiv);
 
-        generateAPIResponse(incomingMessageDiv);
-    };
+    generateAPIResponse(incomingMessageDiv);
+};
 
-    const handleOutgoingChat = () => {
-        userMessage = typingForm.querySelector(".typing-input").value.trim();
-        if (!userMessage) return;
+const handleOutgoingChat = () => {
+    userMessage = typingForm.querySelector(".typing-input").value.trim();
+    if (!userMessage) return;
 
-        const html = ` <div class="message-content">
+    const html = ` <div class="message-content">
                 <img src="images/user.png" alt="User Image" class="avatar">
                 <p class="text"></p>
             </div>`;
 
-        const outgoingMessageDiv = createMessageElement(html, "outgoing");
-        outgoingMessageDiv.querySelector(".text").innerText = userMessage;
+    const outgoingMessageDiv = createMessageElement(html, "outgoing");
+    outgoingMessageDiv.querySelector(".text").innerText = userMessage;
 
-        chatList.appendChild(outgoingMessageDiv);
-        typingForm.reset();
-        setTimeout(showLoadingAnimation, 500);
-    };
+    chatList.appendChild(outgoingMessageDiv);
+    typingForm.reset();
+    setTimeout(showLoadingAnimation, 500);
+};
 
-    typingForm.addEventListener("submit", (e) => {
-        e.preventDefault();
+typingForm.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-        handleOutgoingChat();
-    });
+    handleOutgoingChat();
+});
