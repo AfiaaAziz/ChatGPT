@@ -28,10 +28,19 @@ color: var(--text-color);
 
 }
 
+
+
+.header , .typing-form{
+max-width: 1000px;
+margin: 0 auto;
+
+}
+
 .header
 {
-    margin-top: 7vh;
+    /* margin-top: 7vh; */
     padding: 1rem;
+    display: none;
 }
 
 .header :where(.title, .subtitle){
@@ -107,6 +116,8 @@ border-radius: 50%;
     position: fixed;
     width: 100%;
     bottom: 0;
+    padding: 1rem;
+    background: var(--primary-color);
 }
 
 
@@ -141,6 +152,17 @@ position: relative;
 
 }
 
+.typing-area .typing-input:focus{
+    background: var(--secondary-hover-color);
+}
+
+
+.typing-area .typing-input::placeholder
+{
+    color: var(--placeholder-color);
+
+}
+
 .typing-area  .icon{
     background: var(--secondary-color);
     height: 56px;
@@ -164,5 +186,24 @@ position: relative;
     border: none;
     background: none;
     color: var(--text-color);
+    transform: scale(0);
+    transition: transform 0.2 ease;
 
 }
+
+.typing-area .input-wrapper .typing-input:valid  ~ .icon 
+{
+    transform: scale(1);
+
+
+}
+
+.typing-area   .disclaimer-text
+{
+    font-size: 0.85rem;
+    margin-top: 1rem;
+    text-align: center;
+    color: var(--placeholder-color);
+
+}
+
