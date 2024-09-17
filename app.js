@@ -1,19 +1,46 @@
-const typingForm =  document.querySelector('.typing-form');
-const chatList =  document.querySelector('.chat-list');
-
-
+const typingForm = document.querySelector(".typing-form");
+const chatList = document.querySelector(".chat-list");
 
 let userMessage = null;
-const createMessageElement = (content , ...classes) => {
-    const div = document.createElement('div');
-    div.classList.add("message" , ...classes);
-    div.innerHTML =  content;
+const API_key = "AIzaSyCHI1QOm-8FA1IFEIqCfM7RDoLTOEx6IUs";
+const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${API_key}`;
+
+const createMessageElement = (content, ...classes) => {
+    const div = document.createElement("div");
+    div.classList.add("message", ...classes);
+    div.innerHTML = content;
     return div;
-}
+};
 
-const showLoadingAnimation  = () => {
 
-    const html = ` <div class="message-content">
+const generateAPIResponse = async () => {
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                contents: [
+                    {
+                        role: "user",
+                        parts: [{ text: userMessage }]
+                    }
+                ]
+            })
+        });
+
+      const data = await response.json();
+      
+
+    } catch (error) {
+        console.log("Error:", error);
+        // Handle the error, e.g., by returning an error message
+    }
+};
+
+
+
+    const showLoadingAnimation = () => {
+        const html = ` <div class="message-content">
                 <img src="images/Gemini icon.png" alt="Gemini Image" class="avatar">
                 <p class="text"></p>
                 <div class="loading-indicator">
@@ -24,35 +51,32 @@ const showLoadingAnimation  = () => {
             </div>
             <span class="icon material-symbols-rounded">content_copy</span>`;
 
-const incomingMessageDiv =   createMessageElement(html, "incoming", "loading");
-     
-chatList.appendChild( incomingMessageDiv );
+        const incomingMessageDiv = createMessageElement(html, "incoming", "loading");
 
+        chatList.appendChild(incomingMessageDiv);
 
-}
+        generateAPIResponse();
+    };
 
-const handleOutgoingChat = () =>{
-    userMessage = typingForm.querySelector(".typing-input").value.trim();
-    if(!userMessage) return;
+    const handleOutgoingChat = () => {
+        userMessage = typingForm.querySelector(".typing-input").value.trim();
+        if (!userMessage) return;
 
-   const html = ` <div class="message-content">
+        const html = ` <div class="message-content">
                 <img src="images/user.png" alt="User Image" class="avatar">
                 <p class="text"></p>
             </div>`;
 
-          const outgoingMessageDiv =   createMessageElement(html, "outgoing");
-          outgoingMessageDiv.querySelector(".text").innerText =  userMessage;
+        const outgoingMessageDiv = createMessageElement(html, "outgoing");
+        outgoingMessageDiv.querySelector(".text").innerText = userMessage;
 
-          chatList.appendChild( outgoingMessageDiv);
- typingForm.reset();
- setTimeout(showLoadingAnimation, 500);
+        chatList.appendChild(outgoingMessageDiv);
+        typingForm.reset();
+        setTimeout(showLoadingAnimation, 500);
+    };
 
-}
+    typingForm.addEventListener("submit", (e) => {
+        e.preventDefault();
 
-
-typingForm.addEventListener("submit", (e) =>{
-  e.preventDefault();
-
-  handleOutgoingChat();
-});
-
+        handleOutgoingChat();
+    });
