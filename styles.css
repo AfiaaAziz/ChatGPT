@@ -57,8 +57,7 @@ body {
 }
 
 
-body.hide-header .header
-{
+body.hide-header .header {
     display: none;
     margin-top: 0;
 
@@ -182,6 +181,10 @@ body.hide-header .header
     color: var(--text-color);
 }
 
+.chat-list .message .text.error {
+    color: #e55865;
+}
+
 .chat-list .message.loading .text {
 
     display: none;
@@ -221,9 +224,8 @@ body.hide-header .header
 
 }
 
-.chat-list .message.loading .loading-indicator
-{
-display: flex;
+.chat-list .message.loading .loading-indicator {
+    display: flex;
 }
 
 .chat-list .loading-indicator .loading-bar {
@@ -338,4 +340,43 @@ display: flex;
     text-align: center;
     color: var(--placeholder-color);
 
+}
+
+@media (max-width: 768) {
+    .header :is(.title, .subtitle) {
+        font-size: 2rem;
+        line-height: 2.6rem;
+    }
+
+    .header .subtitle {
+        font-size: 1.7rem;
+    }
+
+    .chat-list .message .avatar {
+        width: 37px;
+        height: 37px;
+    }
+
+
+    .typing-area :where(.typing-form, .action-buttons) {
+        gap: 0.4rem;
+    }
+
+    .typing-form .input-wrapper {
+        height: 50px;
+    }
+
+    .typing-form .typing-input {
+        padding: 1.1rem 3.5rem 1.1rem 1.2rem;
+    }
+
+    .typing-form .icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .typing-area .disclaimer-text {
+        font-size: 0.75rem;
+        margin-top: 0.5rem;
+    }
 }
