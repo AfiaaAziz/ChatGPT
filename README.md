@@ -1,4 +1,4 @@
-## Google Gemini Chatbot
+# Google Gemini Chatbot
 
 # Overview
 The **Google Gemini Chatbot** is a simple, user-friendly chatbot interface built using HTML, CSS, and JavaScript. It mimics a conversation flow, allowing users to interact with the bot, which responds with pre-programmed replies based on user input.
